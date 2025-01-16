@@ -1,8 +1,5 @@
 "use client";
-import 'cally/dist/index.css';
-import '../types/cally';
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect, createElement } from "react";
 
 export const Calendar: React.FC = () => {
   useEffect(() => {
@@ -10,10 +7,12 @@ export const Calendar: React.FC = () => {
   }, []);
 
   return (
-    <calendar-range months="1">
-      <calendar-month></calendar-month>
-      <calendar-month offset="1"></calendar-month>
-    </calendar-range>
+    <div>
+      {createElement('calendar-range', { months: "1" }, 
+        createElement('calendar-month', null),
+        createElement('calendar-month', { offset: "1" })
+      )}
+    </div>
   );
 };
 
