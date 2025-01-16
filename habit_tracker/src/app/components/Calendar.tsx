@@ -1,20 +1,8 @@
 "use client";
-
+import 'cally/dist/index.css';
+import '../types/cally';
+import React from "react";
 import { useEffect } from "react";
-
-declare module "react" {
-  interface IntrinsicElements {
-    'calendar-range': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-      months?: string;
-      min?: string;
-      max?: string;
-      children?: React.ReactNode;
-    };
-    'calendar-month': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-      offset?: string;
-    };
-  }
-}
 
 export const Calendar: React.FC = () => {
   useEffect(() => {
@@ -28,3 +16,5 @@ export const Calendar: React.FC = () => {
     </calendar-range>
   );
 };
+
+export default Calendar;
