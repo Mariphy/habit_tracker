@@ -8,7 +8,7 @@ interface Habit {
   weeklyGoal: number;
 }
 
-const HabitList: React.FC = () => {
+export default function HabitList() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState<string>('');
   const [weeklyGoal, setWeeklyGoal] = useState<number>(0);
@@ -62,5 +62,3 @@ const HabitList: React.FC = () => {
     </div>
   );
 };
-
-export default HabitList;

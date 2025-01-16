@@ -1,19 +1,28 @@
 "use client";
 import React, { useEffect, createElement } from "react";
 
-export const Calendar: React.FC = () => {
+interface CalendarProps {
+  months?: number; 
+  minDate?: string; 
+  maxDate?: string;
+}
+
+export default function Calendar({
+  months = 1, 
+  minDate = "2023-01-01", 
+  maxDate = "2023-12-31", 
+  //showWeekNumbers = false, // Default to no week numbers
+  //startOfWeek = "Sunday", // Default to Sunday as the start of the week
+}: CalendarProps) {
   useEffect(() => {
     import("cally"); // Dynamically import the Cally library
   }, []);
 
   return (
     <div>
-      {createElement('calendar-range', { months: "1" }, 
+      {createElement('calendar-range', { months: months.toString(), minDate, maxDate }, 
         createElement('calendar-month', null),
-        createElement('calendar-month', { offset: "1" })
       )}
     </div>
   );
 };
-
-export default Calendar;

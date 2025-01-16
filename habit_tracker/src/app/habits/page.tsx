@@ -1,7 +1,7 @@
 import React from 'react';
 import HabitList from '../components/HabitList';
 
-const HabitsPage: React.FC = () => {
+export default function HabitsPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Habits</h1>
@@ -9,5 +9,3 @@ const HabitsPage: React.FC = () => {
     </div>
   );
 };
-
-export default HabitsPage;
