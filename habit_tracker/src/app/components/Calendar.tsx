@@ -3,18 +3,16 @@
 import { useEffect } from "react";
 
 declare module "react" {
-  namespace JSX {
-    interface IntrinsicElements {
-      'calendar-range': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-        months?: string;
-        min?: string;
-        max?: string;
-        children?: React.ReactNode;
-      };
-      'calendar-month': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-        offset?: string;
-      };
-    }
+  interface IntrinsicElements {
+    'calendar-range': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+      months?: string;
+      min?: string;
+      max?: string;
+      children?: React.ReactNode;
+    };
+    'calendar-month': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+      offset?: string;
+    };
   }
 }
 
