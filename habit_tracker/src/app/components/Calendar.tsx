@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, createElement } from "react";
-import NavBar from "./NavBar";
 
 interface CalendarProps {
   months?: number; 
@@ -21,7 +20,6 @@ export default function Calendar({
 
   return (
     <div>
-      <NavBar />
       {createElement('calendar-range', { months: months.toString(), minDate, maxDate }, 
         createElement('calendar-month', null),
       )}
