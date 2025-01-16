@@ -1,10 +1,11 @@
 import React from 'react';
 import HabitList from '../components/HabitList';
+import NavBar from '../components/NavBar';
 
 export default function HabitsPage() {
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Habits</h1>
+      <NavBar />
       <HabitList />
     </div>
   );
