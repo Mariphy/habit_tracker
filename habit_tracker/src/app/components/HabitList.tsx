@@ -64,6 +64,52 @@ export default function HabitTracker() {
     }
   };
 
+   // Mark a habit as completed today
+   const handleCompleteToday = async (habitId: number) => {
+    const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+    const updatedHabits = habits.map((habit) => {
+      if (habit.id === habitId && habit.completedDays < habit.weeklyGoal) {
+        return {
+          ...habit,
+          completedDays: habit.completedDays + 1,
+        };
+      }
+      return habit;
+    });
+
+    setHabits(updatedHabits);
+
+    try {
+      await fetch(`http://localhost:3000/api/habits/${habitId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ completedDays: today }),
+      });
+    } catch (error) {
+      console.error("Error updating habit:", error);
+    }
+  };
+
+   // Delete a habit
+   const handleDeleteHabit = async (habitId: number) => {
+    try {
+      const response = await fetch(`/api/habits/${habitId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete habit.');
+      }
+  
+      // Remove the habit from the state after deletion
+      setHabits((prev) => prev.filter((habit) => habit.id !== habitId));
+    } catch (error) {
+      console.error('Error deleting habit:', error);
+    }
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* Form Section */}
@@ -122,6 +168,19 @@ export default function HabitTracker() {
                 ))}
               </div>
             </div>
+             {/* Complete Button */}
+             <button
+              onClick={() => handleCompleteToday(habit.id)}
+              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+            >
+              Complete Today
+            </button>
+            <button
+                onClick={() => handleDeleteHabit(habit.id)}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+              >
+                Delete
+              </button>
           </div>
         ))}
       </div>
