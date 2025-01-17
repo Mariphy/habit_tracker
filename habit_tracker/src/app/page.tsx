@@ -1,5 +1,3 @@
-"use client";
-import React, { useState } from 'react';
 import NavBar from './components/NavBar';
 import Calendar from './components/Calendar';
 
