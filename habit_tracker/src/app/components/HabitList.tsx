@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Habit {
   id: number;
@@ -13,21 +13,58 @@ export default function HabitList() {
   const [newHabit, setNewHabit] = useState<string>('');
   const [weeklyGoal, setWeeklyGoal] = useState<number>(0);
 
-  const addHabit = () => {
+  const fetchHabits = async () => {
+    const response = await fetch('/api/habits');
+    const data = await response.json();
+    setHabits(data);
+  };
+
+  const addHabit = async () => {
     if (newHabit.trim()) {
-      setHabits([...habits, { id: Date.now(), name: newHabit, completedDays: 0, weeklyGoal }]);
+      const response = await fetch('/api/habits', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: Date.now(), name: newHabit, completedDays: 0, weeklyGoal }),
+      });
+      const data = await response.json();
+      setHabits([...habits, data]);
       setNewHabit('');
       setWeeklyGoal(0);
     }
   };
 
-  const deleteHabit = (id: number) => {
+  const deleteHabit = async (id: number) => {
+    await fetch('/api/habits', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    });
     setHabits(habits.filter(habit => habit.id !== id));
   };
 
-  const markAsCompleted = (id: number) => {
-    setHabits(habits.map(habit => habit.id === id ? { ...habit, completedDays: habit.completedDays + 1 } : habit));
+  const markAsCompleted = async (id: number) => {
+    const habit = habits.find(habit => habit.id === id);
+    if (habit) {
+      const updatedHabit = { ...habit, completedDays: habit.completedDays + 1 };
+      await fetch('/api/habits', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedHabit),
+      });
+      setHabits(habits.map(habit => habit.id === id ? updatedHabit : habit));
+    }
   };
+
+  useEffect(() => {
+    fetchHabits();
+  }, []);
+
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Habits</h2>
