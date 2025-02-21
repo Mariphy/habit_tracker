@@ -1,4 +1,5 @@
 import { connectToDb } from "../db";
+import { ObjectId } from "mongodb";
 
 export async function GET() {
     const { db } = await connectToDb();
@@ -26,5 +27,23 @@ export async function POST(request: Request) {
     });
 }
 
+export async function DELETE(request: Request) {
+    const { db } = await connectToDb();
+    const { id } = await request.json();
 
+    const result = await db.collection('habits').deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 1) {
+        return new Response(null, {
+            status: 204,
+        });
+    } else {
+        return new Response(JSON.stringify({ error: 'Habit not found' }), {
+            status: 404,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+}
 
