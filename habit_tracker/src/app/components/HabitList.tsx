@@ -123,7 +123,7 @@ export default function HabitTracker() {
               value={habitName}
               onChange={(e) => setHabitName(e.target.value)}
               placeholder="Enter habit name"
-              className="w-full p-2 border rounded-lg"
+              className="w-1/3 p-2 border rounded-lg"
             />
           </div>
           <div>
@@ -133,7 +133,7 @@ export default function HabitTracker() {
               value={weeklyGoal}
               onChange={(e) => setWeeklyGoal(Number(e.target.value))}
               placeholder="Enter goal days"
-              className="w-full p-2 border rounded-lg"
+              className="w-1/3 p-2 border rounded-lg"
               min={1}
               max={7}
             />
@@ -180,11 +180,10 @@ export default function HabitTracker() {
                 className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
               >
                 Delete
-              </button>
+            </button>
           </div>
         ))}
       </div>
     </div>
   );
 }
- 
