@@ -16,6 +16,10 @@ export async function GET() {
 export async function POST(request: Request) {
     const { db } = await connectToDb();
     const habit = await request.json();
+    const newHabit = {
+        ...habit,
+        _id: new ObjectId(), // Generate a new ObjectId for the habit
+    };
     const result = await db.collection('habits').insertOne(habit);
 
     const insertedHabit = await db.collection('habits').findOne({ _id: result.insertedId });
@@ -30,6 +34,15 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
     const { db } = await connectToDb();
     const { id } = await request.json();
+
+    if (!ObjectId.isValid(id)) {
+        return new Response(JSON.stringify({ error: 'Invalid ID format' }), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
 
     const result = await db.collection('habits').deleteOne({ _id: new ObjectId(id) });
 

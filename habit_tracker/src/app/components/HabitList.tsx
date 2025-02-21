@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 interface Habit {
-  id: number;
+  _id: string;
   name: string;
   completedDays: number;
   weeklyGoal: number;
@@ -37,7 +37,7 @@ export default function HabitTracker() {
       return;
     }
 
-    const newHabit: Omit<Habit, "id"> = {
+    const newHabit: Omit<Habit, "_id"> = {
       name: habitName,
       completedDays: 0,
       weeklyGoal: Number(weeklyGoal),
@@ -65,10 +65,10 @@ export default function HabitTracker() {
   };
 
    // Mark a habit as completed today
-   const handleCompleteToday = async (habitId: number) => {
+   const handleCompleteToday = async (habitId: string) => {
     const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
     const updatedHabits = habits.map((habit) => {
-      if (habit.id === habitId && habit.completedDays < habit.weeklyGoal) {
+      if (habit._id === habitId && habit.completedDays < habit.weeklyGoal) {
         return {
           ...habit,
           completedDays: habit.completedDays + 1,
@@ -93,7 +93,7 @@ export default function HabitTracker() {
   };
 
    // Delete a habit
-   const handleDeleteHabit = async (habitId: number) => {
+   const handleDeleteHabit = async (habitId: string) => {
     try {
       const response = await fetch(`/api/habits/${habitId}`, {
         method: 'DELETE',
@@ -104,7 +104,7 @@ export default function HabitTracker() {
       }
   
       // Remove the habit from the state after deletion
-      setHabits((prev) => prev.filter((habit) => habit.id !== habitId));
+      setHabits((prev) => prev.filter((habit) => habit._id !== habitId));
     } catch (error) {
       console.error('Error deleting habit:', error);
     }
@@ -151,7 +151,7 @@ export default function HabitTracker() {
       <div className="space-y-6">
         {habits.map((habit) => (
           <div
-            key={habit.id}
+            key={habit._id}
             className="p-4 bg-gray-100 shadow rounded-lg flex justify-between items-center"
           >
             {/* Name and Progress */}
@@ -170,13 +170,13 @@ export default function HabitTracker() {
             </div>
              {/* Complete Button */}
              <button
-              onClick={() => handleCompleteToday(habit.id)}
+              onClick={() => handleCompleteToday(habit._id)}
               className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
             >
               Complete Today
             </button>
             <button
-                onClick={() => handleDeleteHabit(habit.id)}
+                onClick={() => handleDeleteHabit(habit._id)}
                 className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
               >
                 Delete
