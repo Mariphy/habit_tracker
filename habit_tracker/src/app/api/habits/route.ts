@@ -31,6 +31,38 @@ export async function POST(request: Request) {
     });
 }
 
+export async function PATCH(request: Request) {
+    const { db } = await connectToDb();
+    const { id, completedDays } = await request.json();
+
+    if (!ObjectId.isValid(id)) {
+        return new Response(JSON.stringify({ error: 'Invalid ID format' }), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+
+    const result = await db.collection('habits').updateOne(
+        { _id: ObjectId.createFromHexString(id) },
+        { $set: { completedDays } }
+    );
+
+    if (result.modifiedCount === 1) {
+        return new Response(null, {
+            status: 204,
+        });
+    } else {
+        return new Response(JSON.stringify({ error: 'Habit not found' }), {
+            status: 404,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+}
+
 export async function DELETE(request: Request) {
     const { db } = await connectToDb();
     const { id } = await request.json();
@@ -44,7 +76,7 @@ export async function DELETE(request: Request) {
         });
     }
 
-    const result = await db.collection('habits').deleteOne({ _id: new ObjectId(id) });
+    const result = await db.collection('habits').deleteOne({ _id: ObjectId.createFromHexString(id) });
 
     if (result.deletedCount === 1) {
         return new Response(null, {

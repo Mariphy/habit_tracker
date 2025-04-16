@@ -85,7 +85,7 @@ export default function HabitTracker() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ completedDays: today }),
+        body: JSON.stringify({ id: habitId, completedDays: updatedHabits.find(habit => habit._id === habitId)?.completedDays }),
       });
     } catch (error) {
       console.error("Error updating habit:", error);
